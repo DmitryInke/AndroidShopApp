@@ -8,5 +8,15 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
+    <color name="primary">#243157</color>
+    <color name="primaryDark">#222934</color>
+    <color name="accent">#243157</color>
+
+    <color name="themeBlue">#243157</color>
+    <color name="themePurple">#5B1663</color>
+
+    <color name="primaryText">#222934</color>
+    <color name="secondaryText">#989898</color>
+
 
 </resources>
