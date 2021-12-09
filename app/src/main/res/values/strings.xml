@@ -2,7 +2,7 @@
     <string name="app_name">ShopApp</string>
     <string name="content_description">image</string>
     <string name="title_login">LOGIN</string>
-    <string name="et_hint_email_id">Email ID</string>
+    <string name="et_hint_email_id">Email</string>
     <string name="et_hint_password">Password</string>
     <string name="lbl_forgot_password">Forgot Password?</string>
     <string name="btn_lbl_login">Login</string>
@@ -25,17 +25,24 @@
     <string name="err_msg_enter_email">Please enter email.</string>
     <string name="err_msg_enter_password">Please enter password.</string>
     <string name="err_msg_enter_confirm_password">Please enter confirm password.</string>
+    <string name="err_msg_enter_valid_email">Please enter a valid email!</string>
     <string name="err_msg_password_and_confirm_password_mismatch">Password and confirm password does not match.</string>
     <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
-    <string name="val_msg_registery_successfull">You are registered successfully. Your user id is </string>
+    <string name="val_msg_registery_successfull">You are registered successfully.</string>
 
     <string name="please_wait">Please Wait&#8230;</string>
 
     <string name="val_msg_login_successfull">You are logged in successfully.</string>
 
     <string name="title_forgot_password">FORGOT PASSWORD?</string>
-    <string name="forgot_password_title_description">Enter your e-mail address we\'ll send you a email to reset your password</string>
+    <string name="forgot_password_title_description">Enter your e-mail address we\'ll send you an email to reset your password</string>
     <string name="btn_lbl_submit">Submit</string>
     <string name="email_sent_success">\Email sent successfully to reset your password! \</string>
+
+    <string name="title_complete_profile">COMPLETE PROFILE</string>
+    <string name="et_hint_mobile_number">Mobile Number</string>
+    <string name="rb_lbl_male">MALE</string>
+    <string name="rb_lbl_female">FEMALE</string>
+    <string name="btn_lbl_save">Save</string>
 
 </resources>

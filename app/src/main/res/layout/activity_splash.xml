@@ -7,7 +7,7 @@
     android:background="@drawable/splash_bg"
     tools:context=".ui.activities.SplashActivity">
 
-    <com.example.shopapp.utils.MSPTextViewBold
+    <com.example.shopapp.utils.SATextViewBold
         android:id="@+id/tv_app_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,7 +17,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

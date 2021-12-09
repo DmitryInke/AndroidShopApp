@@ -10,6 +10,8 @@ import android.view.View
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.shopapp.R
+import com.example.shopapp.firestore.FirestoreClass
+import com.example.shopapp.models.User
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.et_email
@@ -61,9 +63,13 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         return when {
             TextUtils.isEmpty(
                 et_email.text.toString()
-                    .trim { it <= ' ' }) || !android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString())
-                .matches() -> {
+                    .trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString())
+                .matches() -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_valid_email), true)
                 false
             }
             TextUtils.isEmpty(et_password.text.toString().trim { it <= ' ' }) -> {
@@ -86,18 +92,30 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
             // Log-In using FirebaseAuth
             FirebaseAuth.getInstance().signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-
-                    hideProgressDialog()
-
                     if (task.isSuccessful) {
-                        showErrorSnackBar(
-                            resources.getString(R.string.val_msg_login_successfull),
-                            false
-                        )
+                        FirestoreClass().getUserDetails(this@LoginActivity)
                     } else {
+                        hideProgressDialog()
                         showErrorSnackBar(task.exception!!.message.toString(), true)
                     }
                 }
         }
+    }
+
+    fun userLoggedInSuccess(user: User) {
+
+        hideProgressDialog()
+
+        Log.i("First Name: ", user.firstName)
+        Log.i("Last Name: ", user.lastName)
+        Log.i("Email: ", user.email)
+
+        if (user.profileCompleted == 0) {
+            val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            startActivity(intent)
+        } else {
+            startActivity(Intent(this@LoginActivity, MainActivity::class.java))
+        }
+        finish()
     }
 }

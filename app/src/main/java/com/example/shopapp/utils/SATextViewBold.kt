@@ -6,7 +6,7 @@ import android.util.AttributeSet
 import androidx.appcompat.widget.AppCompatTextView
 
 
-class MSPTextViewBold(context: Context, attrs: AttributeSet) : AppCompatTextView(context, attrs) {
+class SATextViewBold(context: Context, attrs: AttributeSet) : AppCompatTextView(context, attrs) {
     init {
 
         applyFont()

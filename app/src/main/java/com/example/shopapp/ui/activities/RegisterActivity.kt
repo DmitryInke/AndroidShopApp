@@ -1,17 +1,19 @@
 package com.example.shopapp.ui.activities
 
-import android.content.Intent
 import android.os.Build
-
 import android.os.Bundle
 import android.text.TextUtils
-import android.util.Log
 import android.view.WindowInsets
 import android.view.WindowManager
 import com.example.shopapp.R
+import com.example.shopapp.firestore.FirestoreClass
+import com.example.shopapp.models.User
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
+import kotlinx.android.synthetic.main.activity_register.et_email
+import kotlinx.android.synthetic.main.activity_register.et_password
 
 class RegisterActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -65,9 +67,13 @@ class RegisterActivity : BaseActivity() {
 
             TextUtils.isEmpty(
                 et_email.text.toString()
-                    .trim { it <= ' ' }) || !android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString())
-                .matches() -> {
+                    .trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+                false
+            }
+            !android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString())
+                .matches() -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_valid_email), true)
                 false
             }
 
@@ -117,26 +123,38 @@ class RegisterActivity : BaseActivity() {
             // Create an instance and create a register a user with email and password.
             FirebaseAuth.getInstance().createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener { task ->
-                    hideProgressDialog()
                     // If the registration is successfully done
                     if (task.isSuccessful) {
 
                         // Firebase registered user
                         val firebaseUser: FirebaseUser = task.result!!.user!!
 
-                        showErrorSnackBar(
-                            resources.getString(R.string.val_msg_registery_successfull) + firebaseUser.uid,
-                            false
+                        val user = User(
+                            firebaseUser.uid,
+                            et_first_name.text.toString().trim { it <= ' ' },
+                            et_last_name.text.toString().trim { it <= ' ' },
+                            et_email.text.toString().trim { it <= ' ' }
                         )
-                        FirebaseAuth.getInstance().signOut()
-                        // Finish the Register Screen
-                        finish()
+
+                        FirestoreClass().registerUser(this@RegisterActivity, user)
                     } else {
+                        hideProgressDialog()
                         // If the registering is not successful then show error message.
                         showErrorSnackBar(task.exception!!.message.toString(), true)
                     }
                 }
         }
+    }
+
+    fun userRegistrationSuccess() {
+        hideProgressDialog()
+        showErrorSnackBar(
+            resources.getString(R.string.val_msg_registery_successfull),
+            false
+        )
+
+        FirebaseAuth.getInstance().signOut()
+        finish()
     }
 
 }

@@ -8,5 +8,4 @@
         android:startColor="@color/themeBlue"
         android:type="linear" />
 
-    <corners android:radius="@dimen/button_background_radius" />
 </shape>

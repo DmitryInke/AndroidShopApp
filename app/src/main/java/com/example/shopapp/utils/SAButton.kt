@@ -3,18 +3,19 @@ package com.example.shopapp.utils
 import android.content.Context
 import android.graphics.Typeface
 import android.util.AttributeSet
-import androidx.appcompat.widget.AppCompatEditText
+import androidx.appcompat.widget.AppCompatButton
 
-class MSPEditText(context: Context, attrs: AttributeSet) : AppCompatEditText(context, attrs) {
+class SAButton(context: Context, attrs: AttributeSet) : AppCompatButton(context, attrs) {
+
     init {
-
         applyFont()
     }
 
     private fun applyFont() {
-       
+
         val typeface: Typeface =
-            Typeface.createFromAsset(context.assets, "Montserrat-Regular.ttf")
+            Typeface.createFromAsset(context.assets, "Montserrat-Bold.ttf")
         setTypeface(typeface)
+
     }
 }

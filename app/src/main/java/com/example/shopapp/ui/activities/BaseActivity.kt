@@ -23,7 +23,7 @@ open class BaseActivity : AppCompatActivity() {
                     R.color.snackBarError
                 )
             )
-        }else{
+        } else {
             snackBarView.setBackgroundColor(
                 ContextCompat.getColor(
                     this@BaseActivity,

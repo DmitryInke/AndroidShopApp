@@ -9,6 +9,7 @@ import com.example.shopapp.R
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_forgot_password.*
 import kotlinx.android.synthetic.main.activity_forgot_password.et_email
+import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_register.*
 
 class ForgotPasswordActivity : BaseActivity() {
@@ -30,8 +31,15 @@ class ForgotPasswordActivity : BaseActivity() {
 
         btn_submit.setOnClickListener {
             val email: String = et_email.text.toString().trim { it <= ' ' }
-            if (email.isEmpty() || !android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+            if (email.isEmpty()) {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_email), true)
+            } else if (!android.util.Patterns.EMAIL_ADDRESS.matcher(et_email.text.toString())
+                    .matches()
+            ) {
+                showErrorSnackBar(
+                    resources.getString(com.example.shopapp.R.string.err_msg_enter_valid_email),
+                    true
+                )
             } else {
 
                 showProgressDialog(resources.getString(R.string.please_wait))
