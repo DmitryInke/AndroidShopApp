@@ -27,5 +27,15 @@
     <string name="err_msg_enter_confirm_password">Please enter confirm password.</string>
     <string name="err_msg_password_and_confirm_password_mismatch">Password and confirm password does not match.</string>
     <string name="err_msg_agree_terms_and_condition">Please agree terms and condition.</string>
-    <string name="val_msg_registery_successfull">Thanks for registering!</string>
+    <string name="val_msg_registery_successfull">You are registered successfully. Your user id is </string>
+
+    <string name="please_wait">Please Wait&#8230;</string>
+
+    <string name="val_msg_login_successfull">You are logged in successfully.</string>
+
+    <string name="title_forgot_password">FORGOT PASSWORD?</string>
+    <string name="forgot_password_title_description">Enter your e-mail address we\'ll send you a email to reset your password</string>
+    <string name="btn_lbl_submit">Submit</string>
+    <string name="email_sent_success">\Email sent successfully to reset your password! \</string>
+
 </resources>

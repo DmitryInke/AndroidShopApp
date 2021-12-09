@@ -10,7 +10,7 @@
 
     <color name="primary">#243157</color>
     <color name="primaryDark">#222934</color>
-    <color name="accent">#243157</color>
+    <color name="colorAccent">#243157</color>
 
     <color name="themeBlue">#243157</color>
     <color name="themePurple">#5B1663</color>
