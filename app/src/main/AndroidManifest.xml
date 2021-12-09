@@ -10,10 +10,18 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopApp">
         <activity
+            android:name=".ui.activities.BaseActivity"
+            android:exported="false" />
+        <activity
+            android:name=".ui.activities.RegisterActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ShopApp.NoActionBar" />
+        <activity
             android:name=".ui.activities.LoginActivity"
             android:exported="false"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.ShopApp.NoActionBar"/>
+            android:theme="@style/Theme.ShopApp.NoActionBar" />
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false"

@@ -18,5 +18,8 @@
     <color name="primaryText">#222934</color>
     <color name="secondaryText">#989898</color>
 
+    <color name="snackBarSuccess">#8BC34A</color>
+    <color name="snackBarError">#F72400</color>
+
 
 </resources>
