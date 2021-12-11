@@ -12,6 +12,7 @@ import android.view.WindowManager
 import com.example.shopapp.R
 import com.example.shopapp.firestore.FirestoreClass
 import com.example.shopapp.models.User
+import com.example.shopapp.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_login.*
 import kotlinx.android.synthetic.main.activity_login.et_email
@@ -112,6 +113,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
 
         if (user.profileCompleted == 0) {
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
+            intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
             startActivity(intent)
         } else {
             startActivity(Intent(this@LoginActivity, MainActivity::class.java))

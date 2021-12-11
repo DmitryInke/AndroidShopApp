@@ -172,7 +172,7 @@
                 android:layout_marginTop="25dp"
                 android:layout_marginEnd="16dp"
                 android:orientation="horizontal"
-                app:layout_constraintBottom_toTopOf="@id/btn_submit"
+                app:layout_constraintBottom_toTopOf="@id/btn_save"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/til_mobile_number">
@@ -206,7 +206,7 @@
             </RadioGroup>
 
             <com.example.shopapp.utils.SAButton
-                android:id="@+id/btn_submit"
+                android:id="@+id/btn_save"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"

@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.text.TextUtils
 import android.view.WindowInsets
 import android.view.WindowManager
+import android.widget.Toast
 import com.example.shopapp.R
 import com.example.shopapp.firestore.FirestoreClass
 import com.example.shopapp.models.User
@@ -148,10 +149,11 @@ class RegisterActivity : BaseActivity() {
 
     fun userRegistrationSuccess() {
         hideProgressDialog()
-        showErrorSnackBar(
+        Toast.makeText(
+            this@RegisterActivity,
             resources.getString(R.string.val_msg_registery_successfull),
-            false
-        )
+            Toast.LENGTH_SHORT
+        ).show()
 
         FirebaseAuth.getInstance().signOut()
         finish()
