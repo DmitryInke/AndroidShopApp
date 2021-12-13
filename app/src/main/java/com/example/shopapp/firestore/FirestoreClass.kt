@@ -5,28 +5,25 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.net.Uri
 import android.util.Log
-import com.example.shopapp.models.User
-import com.example.shopapp.ui.activities.LoginActivity
-import com.example.shopapp.ui.activities.RegisterActivity
-import com.example.shopapp.ui.activities.UserProfileActivity
-import com.example.shopapp.utils.Constants
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.example.shopapp.models.User
+import com.example.shopapp.ui.activities.LoginActivity
+import com.example.shopapp.ui.activities.RegisterActivity
+import com.example.shopapp.ui.activities.SettingsActivity
+import com.example.shopapp.ui.activities.UserProfileActivity
+import com.example.shopapp.utils.Constants
 
 class FirestoreClass {
-
     private val mFireStore = FirebaseFirestore.getInstance()
-
     fun registerUser(activity: RegisterActivity, userInfo: User) {
-
         mFireStore.collection(Constants.USERS)
             .document(userInfo.id)
             .set(userInfo, SetOptions.merge())
             .addOnSuccessListener {
-
                 activity.userRegistrationSuccess()
             }
             .addOnFailureListener { e ->
@@ -41,7 +38,6 @@ class FirestoreClass {
 
     fun getCurrentUserID(): String {
         val currentUser = FirebaseAuth.getInstance().currentUser
-
         var currentUserID = ""
         if (currentUser != null) {
             currentUserID = currentUser.uid
@@ -49,16 +45,13 @@ class FirestoreClass {
 
         return currentUserID
     }
-
     fun getUserDetails(activity: Activity) {
-
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .get()
             .addOnSuccessListener { document ->
 
                 Log.i(activity.javaClass.simpleName, document.toString())
-
                 val user = document.toObject(User::class.java)!!
 
                 val sharedPreferences =
@@ -66,7 +59,6 @@ class FirestoreClass {
                         Constants.SHOPAPP_PREFERENCES,
                         Context.MODE_PRIVATE
                     )
-
                 val editor: SharedPreferences.Editor = sharedPreferences.edit()
                 editor.putString(
                     Constants.LOGGED_IN_USERNAME,
@@ -74,10 +66,13 @@ class FirestoreClass {
                 )
                 editor.apply()
 
-
                 when (activity) {
                     is LoginActivity -> {
                         activity.userLoggedInSuccess(user)
+                    }
+
+                    is SettingsActivity ->{
+                        activity.userDetailsSuccess(user)
                     }
                 }
             }
@@ -86,7 +81,11 @@ class FirestoreClass {
                     is LoginActivity -> {
                         activity.hideProgressDialog()
                     }
+                    is SettingsActivity -> {
+                        activity.hideProgressDialog()
+                    }
                 }
+
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while getting user details.",
@@ -94,13 +93,12 @@ class FirestoreClass {
                 )
             }
     }
-
     fun updateUserProfileData(activity: Activity, userHashMap: HashMap<String, Any>) {
-
         mFireStore.collection(Constants.USERS)
             .document(getCurrentUserID())
             .update(userHashMap)
             .addOnSuccessListener {
+
                 when (activity) {
                     is UserProfileActivity -> {
                         activity.userProfileUpdateSuccess()
@@ -108,11 +106,13 @@ class FirestoreClass {
                 }
             }
             .addOnFailureListener { e ->
+
                 when (activity) {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
                     }
                 }
+
                 Log.e(
                     activity.javaClass.simpleName,
                     "Error while updating the user details.",
@@ -122,7 +122,6 @@ class FirestoreClass {
     }
 
     fun uploadImageToCloudStorage(activity: Activity, imageFileURI: Uri?) {
-
         val sRef: StorageReference = FirebaseStorage.getInstance().reference.child(
             Constants.USER_PROFILE_IMAGE + System.currentTimeMillis() + "."
                     + Constants.getFileExtension(
@@ -130,17 +129,16 @@ class FirestoreClass {
                 imageFileURI
             )
         )
+
         sRef.putFile(imageFileURI!!)
             .addOnSuccessListener { taskSnapshot ->
                 Log.e(
                     "Firebase Image URL",
                     taskSnapshot.metadata!!.reference!!.downloadUrl.toString()
                 )
-
                 taskSnapshot.metadata!!.reference!!.downloadUrl
                     .addOnSuccessListener { uri ->
                         Log.e("Downloadable Image URL", uri.toString())
-
                         when (activity) {
                             is UserProfileActivity -> {
                                 activity.imageUploadSuccess(uri.toString())
@@ -149,7 +147,6 @@ class FirestoreClass {
                     }
             }
             .addOnFailureListener { exception ->
-
                 when (activity) {
                     is UserProfileActivity -> {
                         activity.hideProgressDialog()
@@ -163,5 +160,4 @@ class FirestoreClass {
                 )
             }
     }
-
 }

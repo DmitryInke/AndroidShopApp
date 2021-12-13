@@ -12,6 +12,15 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.ShopApp">
         <activity
+            android:name=".ui.activities.SettingsActivity"
+            android:exported="false"
+            android:screenOrientation="portrait"
+            android:theme="@style/Theme.ShopApp.NoActionBar"/>
+        <activity
+            android:name=".ui.activities.DashboardActivity"
+            android:exported="false"
+            android:label="@string/app_name" />
+        <activity
             android:name=".ui.activities.UserProfileActivity"
             android:exported="false"
             android:screenOrientation="portrait"
@@ -35,8 +44,7 @@
         <activity
             android:name=".ui.activities.MainActivity"
             android:exported="false"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.ShopApp.NoActionBar" />
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.activities.SplashActivity"
             android:exported="true"

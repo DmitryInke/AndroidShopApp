@@ -23,5 +23,8 @@
 
     <color name="lightGrey">#F1F1F1</color>
 
+    <color name="border">#E8E6E6</color>
+    <color name="darkGrey">#878787</color>
+
 
 </resources>

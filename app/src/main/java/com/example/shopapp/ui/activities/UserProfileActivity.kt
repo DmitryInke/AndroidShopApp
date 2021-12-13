@@ -20,7 +20,12 @@ import com.example.shopapp.firestore.FirestoreClass
 import com.example.shopapp.models.User
 import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
+import kotlinx.android.synthetic.main.activity_register.*
 import kotlinx.android.synthetic.main.activity_user_profile.*
+import kotlinx.android.synthetic.main.activity_user_profile.et_email
+import kotlinx.android.synthetic.main.activity_user_profile.et_first_name
+import kotlinx.android.synthetic.main.activity_user_profile.et_last_name
+import kotlinx.android.synthetic.main.activity_user_profile.tv_title
 import java.io.IOException
 
 class UserProfileActivity : BaseActivity(), View.OnClickListener {
@@ -44,14 +49,39 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             mUserDetails = intent.getParcelableExtra(Constants.EXTRA_USER_DETAILS)!!
         }
 
-        et_first_name.isEnabled = false
-        et_first_name.setText(mUserDetails.firstName)
+        if (mUserDetails.profileCompleted == 0) {
+            tv_title.text = resources.getString(R.string.title_complete_profile)
 
-        et_last_name.isEnabled = false
-        et_last_name.setText(mUserDetails.lastName)
+            et_first_name.isEnabled = false
+            et_first_name.setText(mUserDetails.firstName)
 
-        et_email.isEnabled = false
-        et_email.setText(mUserDetails.email)
+            et_last_name.isEnabled = false
+            et_last_name.setText(mUserDetails.lastName)
+
+            et_email.isEnabled = false
+            et_email.setText(mUserDetails.email)
+        } else {
+            setupActionBar()
+
+            tv_title.text = resources.getString(R.string.title_edit_profile)
+
+            GlideLoader(this@UserProfileActivity).loadUserPicture(mUserDetails.image, iv_user_photo)
+
+            et_first_name.setText(mUserDetails.firstName)
+            et_last_name.setText(mUserDetails.lastName)
+
+            et_email.isEnabled = false
+            et_email.setText(mUserDetails.email)
+
+            if (mUserDetails.mobile != 0L) {
+                et_mobile_number.setText(mUserDetails.mobile.toString())
+            }
+            if (mUserDetails.gender == Constants.MALE) {
+                rb_male.isChecked = true
+            } else {
+                rb_female.isChecked = true
+            }
+        }
 
         iv_user_photo.setOnClickListener(this@UserProfileActivity)
         btn_save.setOnClickListener(this@UserProfileActivity)
@@ -142,10 +172,31 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    private fun setupActionBar() {
+
+        setSupportActionBar(toolbar_user_profile_activity)
+
+        val actionBar = supportActionBar
+        if (actionBar != null) {
+            actionBar.setDisplayHomeAsUpEnabled(true)
+            actionBar.setHomeAsUpIndicator(R.drawable.ic_white_color_back_24dp)
+        }
+
+        toolbar_user_profile_activity.setNavigationOnClickListener { onBackPressed() }
+    }
+
     private fun validateUserProfileDetails(): Boolean {
         return when {
             TextUtils.isEmpty(et_mobile_number.text.toString().trim { it <= ' ' }) -> {
                 showErrorSnackBar(resources.getString(R.string.err_msg_enter_mobile_number), true)
+                false
+            }
+            TextUtils.isEmpty(et_first_name.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_first_name), true)
+                false
+            }
+            TextUtils.isEmpty(et_last_name.text.toString().trim { it <= ' ' }) -> {
+                showErrorSnackBar(resources.getString(R.string.err_msg_enter_last_name), true)
                 false
             }
             else -> {
@@ -155,10 +206,19 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     }
 
     private fun updateUserProfileDetails() {
-
         val userHashMap = HashMap<String, Any>()
-        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
 
+        val firstName = et_first_name.text.toString().trim { it <= ' ' }
+        if (firstName != mUserDetails.firstName) {
+            userHashMap[Constants.FIRST_NAME] = firstName
+        }
+
+        val lastName = et_last_name.text.toString().trim { it <= ' ' }
+        if (lastName != mUserDetails.lastName) {
+            userHashMap[Constants.LAST_NAME] = lastName
+        }
+
+        val mobileNumber = et_mobile_number.text.toString().trim { it <= ' ' }
         val gender = if (rb_male.isChecked) {
             Constants.MALE
         } else {
@@ -169,13 +229,17 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             userHashMap[Constants.IMAGE] = mUserProfileImageURL
         }
 
-        if (mobileNumber.isNotEmpty()) {
+        if (mobileNumber.isNotEmpty() && mobileNumber != mUserDetails.mobile.toString()) {
             userHashMap[Constants.MOBILE] = mobileNumber.toLong()
         }
 
-        userHashMap[Constants.GENDER] = gender
+        if (gender.isNotEmpty() && gender != mUserDetails.gender) {
+            userHashMap[Constants.GENDER] = gender
+        }
 
-        userHashMap[Constants.COMPLETE_PROFILE] = 1
+        if (mUserDetails.profileCompleted == 0) {
+            userHashMap[Constants.COMPLETE_PROFILE] = 1
+        }
 
         FirestoreClass().updateUserProfileData(
             this@UserProfileActivity,
@@ -192,7 +256,7 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
             Toast.LENGTH_SHORT
         ).show()
 
-        startActivity(Intent(this@UserProfileActivity, MainActivity::class.java))
+        startActivity(Intent(this@UserProfileActivity, DashboardActivity::class.java))
         finish()
     }
 
