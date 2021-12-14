@@ -114,7 +114,8 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
                         if (mSelectedImageFileUri != null) {
                             FirestoreClass().uploadImageToCloudStorage(
                                 this@UserProfileActivity,
-                                mSelectedImageFileUri
+                                mSelectedImageFileUri,
+                                Constants.USER_PROFILE_IMAGE
                             )
                         } else {
                             updateUserProfileDetails()
@@ -148,24 +149,23 @@ class UserProfileActivity : BaseActivity(), View.OnClickListener {
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-            if (requestCode == Constants.PICK_IMAGE_REQUEST_CODE) {
-                if (data != null) {
-                    try {
-                        mSelectedImageFileUri = data.data!!
+        if (resultCode == Activity.RESULT_OK
+            && requestCode == Constants.PICK_IMAGE_REQUEST_CODE
+            && data!!.data != null
+        ) {
+            try {
+                mSelectedImageFileUri = data.data!!
 
-                        GlideLoader(this@UserProfileActivity).loadUserPicture(
-                            mSelectedImageFileUri!!,
-                            iv_user_photo
-                        )
-                    } catch (e: IOException) {
-                        e.printStackTrace()
-                        showErrorSnackBar(
-                            resources.getString(R.string.image_selection_failed),
-                            true
-                        )
-                    }
-                }
+                GlideLoader(this@UserProfileActivity).loadUserPicture(
+                    mSelectedImageFileUri!!,
+                    iv_user_photo
+                )
+            } catch (e: IOException) {
+                e.printStackTrace()
+                showErrorSnackBar(
+                    resources.getString(R.string.image_selection_failed),
+                    true
+                )
             }
         } else if (resultCode == Activity.RESULT_CANCELED) {
             Log.e("Request Cancelled", "Image selection cancelled")

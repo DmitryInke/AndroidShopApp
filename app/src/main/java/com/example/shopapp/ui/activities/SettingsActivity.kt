@@ -61,6 +61,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
             }
         }
     }
+
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_settings_activity)
@@ -73,6 +74,7 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
 
         toolbar_settings_activity.setNavigationOnClickListener { onBackPressed() }
     }
+
     private fun getUserDetails() {
 
         showProgressDialog(resources.getString(R.string.please_wait))
