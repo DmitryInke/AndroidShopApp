@@ -1,5 +1,6 @@
 package com.example.shopapp.ui.activities
 
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -12,6 +13,7 @@ import com.example.shopapp.firestore.FirestoreClass
 import com.example.shopapp.models.Cart
 import com.example.shopapp.models.Product
 import com.example.shopapp.ui.adapters.CartItemsListAdapter
+import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.activity_cart_list.*
 
 class CartListActivity : BaseActivity() {
@@ -30,8 +32,13 @@ class CartListActivity : BaseActivity() {
                 WindowManager.LayoutParams.FLAG_FULLSCREEN
             )
         }
-
         setupActionBar()
+
+        btn_checkout.setOnClickListener {
+            val intent = Intent(this@CartListActivity, AddressListActivity::class.java)
+            intent.putExtra(Constants.EXTRA_SELECT_ADDRESS, true)
+            startActivity(intent)
+        }
     }
 
     override fun onResume() {
