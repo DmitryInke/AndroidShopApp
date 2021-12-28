@@ -19,7 +19,9 @@ class AddEditAddressActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_edit_address)
-        @Suppress("DEPRECATION") if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+
+        @Suppress("DEPRECATION")
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
             window.insetsController?.hide(WindowInsets.Type.statusBars())
         } else {
             window.setFlags(
@@ -180,11 +182,12 @@ class AddEditAddressActivity : BaseActivity() {
 
     fun addUpdateAddressSuccess() {
         hideProgressDialog()
-        val notifySuccessMessage: String = if(mAddressDetails != null && mAddressDetails!!.id.isNotEmpty()){
-            resources.getString(R.string.msg_your_address_updated_successfully)
-        }else{
-            resources.getString(R.string.err_your_address_added_successfully)
-        }
+        val notifySuccessMessage: String =
+            if (mAddressDetails != null && mAddressDetails!!.id.isNotEmpty()) {
+                resources.getString(R.string.msg_your_address_updated_successfully)
+            } else {
+                resources.getString(R.string.err_your_address_added_successfully)
+            }
 
         Toast.makeText(
             this@AddEditAddressActivity,

@@ -113,7 +113,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/secondaryText"
                 android:textSize="@dimen/checkout_label_value_textSize"
-                tools:text="₪10" />
+                tools:text="₪40" />
         </LinearLayout>
 
         <LinearLayout
@@ -136,7 +136,7 @@
                 android:textAlignment="center"
                 android:textColor="@color/darkGrey"
                 android:textSize="@dimen/checkout_label_value_textSize"
-                tools:text="₪110" />
+                tools:text="₪140" />
         </LinearLayout>
 
         <com.example.shopapp.utils.SAButton

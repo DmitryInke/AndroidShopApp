@@ -32,5 +32,8 @@
 
     <color name="dashboard_item_details_bg">#F3F3F3</color>
 
+    <color name="orderStatusInProcess">#FF9800</color>
+    <color name="orderStatusDelivered">#8BC34A</color>
+
 
 </resources>

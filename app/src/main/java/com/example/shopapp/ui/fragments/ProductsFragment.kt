@@ -94,6 +94,7 @@ class ProductsFragment : BaseFragment() {
 
         getProductListFromFireStore()
     }
+
     private fun showAlertDialogToDeleteProduct(productID: String) {
 
         val builder = AlertDialog.Builder(requireActivity())
