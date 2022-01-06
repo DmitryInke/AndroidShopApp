@@ -15,12 +15,21 @@ import com.example.shopapp.ui.activities.CheckoutActivity
 import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.item_address_layout.view.*
 
+/**
+ * An adapter class for Address list items.
+ */
 open class AddressListAdapter(
     private val context: Context,
     private var list: ArrayList<Address>,
     private val selectAddress: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    /**
+     * Inflates the item views which is designed in xml layout file
+     *
+     * create a new
+     * {@link ViewHolder} and initializes some private fields to be used by RecyclerView.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -51,10 +60,19 @@ open class AddressListAdapter(
         }
     }
 
+    /**
+     * Gets the number of items in the list
+     */
     override fun getItemCount(): Int {
         return list.size
     }
 
+    /**
+     * A function to edit the address details and pass the existing details through intent.
+     *
+     * @param activity
+     * @param position
+     */
     fun notifyEditItem(activity: Activity, position: Int) {
         val intent = Intent(context, AddEditAddressActivity::class.java)
         intent.putExtra(Constants.EXTRA_ADDRESS_DETAILS, list[position])
@@ -62,6 +80,8 @@ open class AddressListAdapter(
         notifyItemChanged(position)
     }
 
-
+    /**
+     * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
+     */
     private class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

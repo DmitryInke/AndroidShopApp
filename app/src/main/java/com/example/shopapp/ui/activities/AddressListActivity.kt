@@ -21,6 +21,9 @@ import com.example.shopapp.utils.SwipeToDeleteCallback
 import com.example.shopapp.utils.SwipeToEditCallback
 import kotlinx.android.synthetic.main.activity_address_list.*
 
+/**
+ * Address list screen.
+ */
 class AddressListActivity : BaseActivity() {
     private var mSelectAddress: Boolean = false
 
@@ -59,6 +62,15 @@ class AddressListActivity : BaseActivity() {
         getAddressList()
     }
 
+    /**
+     * @param requestCode The integer request code originally supplied to
+     *                    startActivityForResult(), allowing you to identify who this
+     *                    result came from.
+     * @param resultCode The integer result code returned by the child activity
+     *                   through its setResult().
+     * @param data An Intent, which can return result data to the caller
+     *               (various data can be attached to Intent "extras").
+     */
     public override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         @Suppress("DEPRECATION")
         super.onActivityResult(requestCode, resultCode, data)
@@ -72,6 +84,9 @@ class AddressListActivity : BaseActivity() {
     }
 
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_address_list_activity)
@@ -85,12 +100,20 @@ class AddressListActivity : BaseActivity() {
         toolbar_address_list_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to get the list of address from cloud Firestore.
+     */
     private fun getAddressList() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
         FirestoreClass().getAddressesList(this@AddressListActivity)
     }
 
+    /**
+     * A function to get the success result of address list from cloud Firestore.
+     *
+     * @param addressList
+     */
     fun successAddressListFromFirestore(addressList: ArrayList<Address>) {
         hideProgressDialog()
 
@@ -139,6 +162,9 @@ class AddressListActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function notify the user that the address is deleted successfully.
+     */
     fun deleteAddressSuccess() {
         hideProgressDialog()
         Toast.makeText(

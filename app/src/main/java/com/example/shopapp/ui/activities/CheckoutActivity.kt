@@ -18,14 +18,26 @@ import com.example.shopapp.ui.adapters.CartItemsListAdapter
 import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.activity_checkout.*
 
+/**
+ * A CheckOut activity screen.
+ */
 class CheckoutActivity : BaseActivity() {
+    // A global variable for the selected address details.
     private var mAddressDetails: Address? = null
+
+    // A global variable for the product list.
     private lateinit var mProductsList: ArrayList<Product>
+
+    // A global variable for the cart list.
     private lateinit var mCartItemsList: ArrayList<Cart>
 
+    // A global variable for the SubTotal Amount.
     private var mSubTotal: Double = 0.0
+
+    // A global variable for the Total Amount.
     private var mTotalAmount: Double = 0.0
 
+    // A global variable for Order details.
     private lateinit var mOrderDetails: Order
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -64,6 +76,9 @@ class CheckoutActivity : BaseActivity() {
         getProductList()
     }
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_checkout_activity)
@@ -77,21 +92,37 @@ class CheckoutActivity : BaseActivity() {
         toolbar_checkout_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to get product list to compare the current stock with the cart items.
+     */
     private fun getProductList() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
         FirestoreClass().getAllProductsList(this@CheckoutActivity)
     }
 
+    /**
+     * A function to get the success result of product list.
+     *
+     * @param productsList
+     */
     fun successProductsListFromFireStore(productsList: ArrayList<Product>) {
         mProductsList = productsList
         getCartItemsList()
     }
 
+    /**
+     * A function to get the list of cart items in the activity.
+     */
     private fun getCartItemsList() {
         FirestoreClass().getCartList(this@CheckoutActivity)
     }
 
+    /**
+     * A function to notify the success result of the cart items list from cloud Firestore.
+     *
+     * @param cartList
+     */
     fun successCartItemsList(cartList: ArrayList<Cart>) {
         hideProgressDialog()
 
@@ -135,6 +166,9 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to prepare the Order details to place an order.
+     */
     private fun placeAnOrder() {
         showProgressDialog(resources.getString(R.string.please_wait))
         if (mAddressDetails != null) {
@@ -153,10 +187,16 @@ class CheckoutActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to notify the success result of the order placed.
+     */
     fun orderPlacedSuccess() {
         FirestoreClass().updateAllDetails(this@CheckoutActivity, mCartItemsList, mOrderDetails)
     }
 
+    /**
+     * A function to notify the success result after updating all the required details.
+     */
     fun allDetailsUpdatedSuccessfully() {
         hideProgressDialog()
 

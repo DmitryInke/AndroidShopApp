@@ -23,10 +23,15 @@ import com.example.shopapp.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_add_product.*
 import java.io.IOException
 
+/**
+ * Add Product screen of the app.
+ */
 class AddProductActivity : BaseActivity(), View.OnClickListener {
+    // A global variable for URI of a selected image from phone storage.
     private var mSelectedImageFileUri: Uri? = null
-    private var mProductImageURL: String = ""
 
+    // A global variable for uploaded product image URL.
+    private var mProductImageURL: String = ""
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_add_product)
@@ -43,7 +48,10 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
 
         setupActionBar()
 
+        // Assign the click event to iv_add_update_product image.
         iv_add_update_product.setOnClickListener(this)
+
+        // Assign the click event to submit button.
         btn_submit.setOnClickListener(this)
 
     }
@@ -51,6 +59,7 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
+                // The permission code is similar to the user profile image selection.
                 R.id.iv_add_update_product -> {
                     if (ContextCompat.checkSelfPermission(
                             this,
@@ -76,6 +85,13 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * This function will identify the result of runtime permission after the user allows or deny permission based on the unique code.
+     *
+     * @param requestCode
+     * @param permissions
+     * @param grantResults
+     */
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
@@ -83,9 +99,11 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == Constants.READ_STORAGE_PERMISSION_CODE) {
+            //If permission is granted
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 Constants.showImageChooser(this@AddProductActivity)
             } else {
+                //Displaying another toast if permission is not granted
                 Toast.makeText(
                     this,
                     resources.getString(R.string.read_storage_permission_denied),
@@ -103,14 +121,18 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
             && requestCode == Constants.PICK_IMAGE_REQUEST_CODE
             && data!!.data != null
         ) {
+            // Replace the add icon with edit icon once the image is selected.
             iv_add_update_product.setImageDrawable(
                 ContextCompat.getDrawable(
                     this@AddProductActivity,
                     R.drawable.ic_vector_edit
                 )
             )
+
+            // The uri of selection image from phone storage.
             mSelectedImageFileUri = data.data!!
             try {
+                // Load the product image in the ImageView.
                 GlideLoader(this@AddProductActivity).loadProductPicture(
                     mSelectedImageFileUri!!,
                     iv_product_image
@@ -121,6 +143,9 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
         setSupportActionBar(toolbar_add_product_activity)
         val actionBar = supportActionBar
@@ -132,6 +157,9 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         toolbar_add_product_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to validate the product details.
+     */
     private fun validateProductDetails(): Boolean {
         return when {
             mSelectedImageFileUri == null -> {
@@ -166,6 +194,9 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to upload the selected product image to firebase cloud storage.
+     */
     private fun uploadProductImage() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
@@ -176,17 +207,24 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         )
     }
 
+    /**
+     * A function to get the successful result of product image upload.
+     */
     fun imageUploadSuccess(imageURL: String) {
+        // Initialize the global image url variable.
         mProductImageURL = imageURL
 
         uploadProductDetails()
     }
 
     private fun uploadProductDetails() {
+
+        // Get the logged in username from the SharedPreferences that we have stored at a time of login.
         val username =
             this.getSharedPreferences(Constants.SHOPAPP_PREFERENCES, Context.MODE_PRIVATE)
                 .getString(Constants.LOGGED_IN_USERNAME, "")!!
 
+        // Here we get the text from editText and trim the space
         val product = Product(
             FirestoreClass().getCurrentUserID(),
             username,
@@ -200,6 +238,9 @@ class AddProductActivity : BaseActivity(), View.OnClickListener {
         FirestoreClass().uploadProductDetails(this@AddProductActivity, product)
     }
 
+    /**
+     * A function to return the successful result of Product upload.
+     */
     fun productUploadSuccess() {
         hideProgressDialog()
 

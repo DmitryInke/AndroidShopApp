@@ -37,6 +37,8 @@ class RegisterActivity : BaseActivity() {
         }
 
         tv_login.setOnClickListener {
+            // Here when the user click on login text we can either call the login activity or call the onBackPressed function.
+            // We will call the onBackPressed function.
             onBackPressed()
         }
     }
@@ -54,6 +56,9 @@ class RegisterActivity : BaseActivity() {
         toolbar_register_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to validate the entries of a new user.
+     */
     private fun validateRegisterDetails(): Boolean {
         return when {
             TextUtils.isEmpty(et_first_name.text.toString().trim { it <= ' ' }) -> {
@@ -112,10 +117,15 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to register the user with email and password using FirebaseAuth.
+     */
     private fun registerUser() {
 
+        // Check with validate function if the entries are valid or not.
         if (validateRegisterDetails()) {
 
+            // Show the progress dialog.
             showProgressDialog(resources.getString(R.string.please_wait))
 
             val email: String = et_email.text.toString().trim { it <= ' ' }
@@ -130,6 +140,8 @@ class RegisterActivity : BaseActivity() {
                         // Firebase registered user
                         val firebaseUser: FirebaseUser = task.result!!.user!!
 
+
+                        // Instance of User data model class.
                         val user = User(
                             firebaseUser.uid,
                             et_first_name.text.toString().trim { it <= ' ' },
@@ -137,6 +149,7 @@ class RegisterActivity : BaseActivity() {
                             et_email.text.toString().trim { it <= ' ' }
                         )
 
+                        // Pass the required values in the constructor.
                         FirestoreClass().registerUser(this@RegisterActivity, user)
                     } else {
                         hideProgressDialog()
@@ -147,6 +160,9 @@ class RegisterActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to notify the success result of Firestore entry when the user is registered successfully.
+     */
     fun userRegistrationSuccess() {
         hideProgressDialog()
         Toast.makeText(
@@ -155,6 +171,11 @@ class RegisterActivity : BaseActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
+
+        /**
+         * Here the new user registered is automatically signed-in so we just sign-out the user from firebase
+         * and send him to Intro Screen for Sign-In
+         */
         FirebaseAuth.getInstance().signOut()
         finish()
     }

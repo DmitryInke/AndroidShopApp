@@ -8,6 +8,9 @@ import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
 import com.example.shopapp.R
 
+/**
+ * A abstract class which we will use for edit feature.
+ */
 abstract class SwipeToEditCallback(context: Context) :
     ItemTouchHelper.SimpleCallback(0, ItemTouchHelper.RIGHT) {
 
@@ -15,7 +18,7 @@ abstract class SwipeToEditCallback(context: Context) :
     private val intrinsicWidth = editIcon!!.intrinsicWidth
     private val intrinsicHeight = editIcon!!.intrinsicHeight
     private val background = ColorDrawable()
-    private val backgroundColor = Color.parseColor("#243157")
+    private val backgroundColor = Color.parseColor("#24AE05")
     private val clearPaint = Paint().apply { xfermode = PorterDuffXfermode(PorterDuff.Mode.CLEAR) }
 
 
@@ -23,6 +26,12 @@ abstract class SwipeToEditCallback(context: Context) :
         recyclerView: RecyclerView,
         viewHolder: RecyclerView.ViewHolder
     ): Int {
+        /**
+         * To disable "swipe" for specific item return 0 here.
+         * For example:
+         * if (viewHolder?.itemViewType == YourAdapter.SOME_TYPE) return 0
+         * if (viewHolder?.adapterPosition == 0) return 0
+         */
         if (viewHolder.adapterPosition == 10) return 0
         return super.getMovementFlags(recyclerView, viewHolder)
     }
@@ -56,6 +65,7 @@ abstract class SwipeToEditCallback(context: Context) :
             return
         }
 
+        // Draw the green edit background
         background.color = backgroundColor
         background.setBounds(
             itemView.left + dX.toInt(),
@@ -65,12 +75,14 @@ abstract class SwipeToEditCallback(context: Context) :
         )
         background.draw(c)
 
+        // Calculate position of edit icon
         val editIconTop = itemView.top + (itemHeight - intrinsicHeight) / 2
         val editIconMargin = (itemHeight - intrinsicHeight)
         val editIconLeft = itemView.left + editIconMargin - intrinsicWidth
         val editIconRight = itemView.left + editIconMargin
         val editIconBottom = editIconTop + intrinsicHeight
 
+        // Draw the delete icon
         editIcon!!.setBounds(editIconLeft, editIconTop, editIconRight, editIconBottom)
         editIcon.draw(c)
 

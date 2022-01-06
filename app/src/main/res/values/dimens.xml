@@ -170,9 +170,6 @@
     <dimen name="my_order_details_items_receipt">16dp</dimen>
     <dimen name="my_order_details_label_value_textSize">18sp</dimen>
 
-    <string name="order_status_in_process">In Process</string>
-    <string name="order_status_delivered">Delivered</string>
-
     <dimen name="sold_details_content_marginStartEnd">16dp</dimen>
     <dimen name="sold_details_content_marginTopBottom">10dp</dimen>
     <dimen name="sold_details_content_lbl_padding">2dp</dimen>

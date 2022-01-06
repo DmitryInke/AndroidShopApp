@@ -14,6 +14,9 @@ import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
+/**
+ * A adapter class for products list items.
+ */
 open class MyProductsListAdapter(
     private val context: Context,
     private var list: ArrayList<Product>,
@@ -54,9 +57,15 @@ open class MyProductsListAdapter(
         }
     }
 
+    /**
+     * Gets the number of items in the list
+     */
     override fun getItemCount(): Int {
         return list.size
     }
 
+    /**
+     * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
+     */
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

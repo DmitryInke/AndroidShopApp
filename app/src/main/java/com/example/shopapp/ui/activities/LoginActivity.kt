@@ -17,7 +17,9 @@ import kotlinx.android.synthetic.main.activity_login.et_email
 import kotlinx.android.synthetic.main.activity_login.et_password
 import kotlinx.android.synthetic.main.activity_register.*
 
-
+/**
+ * Login Screen of the application.
+ */
 class LoginActivity : BaseActivity(), View.OnClickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,10 +40,15 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         tv_register.setOnClickListener(this)
     }
 
+    /**
+     * In Login screen the clickable components are Login Button, ForgotPassword text and Register Text.
+     */
     override fun onClick(v: View?) {
         if (v != null) {
             when (v.id) {
                 R.id.tv_forgot_password -> {
+
+                    // Launch the forgot password screen when the user clicks on the forgot password text.
                     val intent = Intent(this@LoginActivity, ForgotPasswordActivity::class.java)
                     startActivity(intent)
                 }
@@ -51,6 +58,7 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
                 }
 
                 R.id.tv_register -> {
+                    // Launch the register screen when the user clicks on the text.
                     val intent = Intent(this@LoginActivity, RegisterActivity::class.java)
                     startActivity(intent)
                 }
@@ -58,6 +66,9 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to validate the login entries of a user.
+     */
     private fun validateLoginDetails(): Boolean {
         return when {
             TextUtils.isEmpty(
@@ -81,10 +92,14 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to Log-In. The user will be able to log in using the registered email and password with Firebase Authentication.
+     */
     private fun logInRegisteredUser() {
         if (validateLoginDetails()) {
             showProgressDialog(resources.getString(R.string.please_wait))
 
+            // Get the text from editText and trim the space
             val email = et_email.text.toString().trim { it <= ' ' }
             val password = et_password.text.toString().trim { it <= ' ' }
 
@@ -101,14 +116,19 @@ class LoginActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to notify user that logged in success and get the user details from the FireStore database after authentication.
+     */
     fun userLoggedInSuccess(user: User) {
         hideProgressDialog()
 
         if (user.profileCompleted == 0) {
+            // If the user profile is incomplete then launch the UserProfileActivity.
             val intent = Intent(this@LoginActivity, UserProfileActivity::class.java)
             intent.putExtra(Constants.EXTRA_USER_DETAILS, user)
             startActivity(intent)
         } else {
+            // Redirect the user to Dashboard Screen after log in.
             startActivity(Intent(this@LoginActivity, DashboardActivity::class.java))
         }
         finish()

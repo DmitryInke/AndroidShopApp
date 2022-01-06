@@ -13,11 +13,20 @@ import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_list_layout.view.*
 
+/**
+ * A adapter class for orders list items.
+ */
 open class MyOrdersListAdapter(
     private val context: Context,
     private var list: ArrayList<Order>
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
+    /**
+     * Inflates the item views which is designed in xml layout file
+     *
+     * create a new
+     * {@link ViewHolder} and initializes some private fields to be used by RecyclerView.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return MyViewHolder(
             LayoutInflater.from(context).inflate(
@@ -48,9 +57,15 @@ open class MyOrdersListAdapter(
         }
     }
 
+    /**
+     * Gets the number of items in the list
+     */
     override fun getItemCount(): Int {
         return list.size
     }
 
+    /**
+     * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
+     */
     class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

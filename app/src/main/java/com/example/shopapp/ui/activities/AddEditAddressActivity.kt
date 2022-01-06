@@ -13,6 +13,9 @@ import com.example.shopapp.models.Address
 import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.activity_add_edit_address.*
 
+/**
+ * Add edit address screen.
+ */
 class AddEditAddressActivity : BaseActivity() {
     private var mAddressDetails: Address? = null
 
@@ -78,6 +81,9 @@ class AddEditAddressActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_add_edit_address_activity)
@@ -91,7 +97,9 @@ class AddEditAddressActivity : BaseActivity() {
         toolbar_add_edit_address_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
-
+    /**
+     * A function to validate the address input entries.
+     */
     private fun validateData(): Boolean {
         return when {
 
@@ -132,6 +140,9 @@ class AddEditAddressActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to save the address to the cloud firestore.
+     */
     private fun saveAddressToFirestore() {
 
         // Here we get the text from editText and trim the space
@@ -180,6 +191,9 @@ class AddEditAddressActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to notify the success result of address saved.
+     */
     fun addUpdateAddressSuccess() {
         hideProgressDialog()
         val notifySuccessMessage: String =

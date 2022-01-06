@@ -14,10 +14,15 @@ import com.example.shopapp.ui.adapters.DashboardItemsListAdapter
 import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.fragment_dashboard.*
 
+/**
+ * Dashboard fragment.
+ */
 class DashboardFragment : BaseFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // If we want to use the option menu in fragment we need to add it.
         setHasOptionsMenu(true)
     }
 
@@ -60,13 +65,24 @@ class DashboardFragment : BaseFragment() {
         getDashboardItemsList()
     }
 
+    /**
+     * A function to get the dashboard items list from cloud Firestore.
+     */
     private fun getDashboardItemsList() {
+        // Show the progress dialog.
         showProgressDialog(resources.getString(R.string.please_wait))
 
         FirestoreClass().getDashboardItemsList(this@DashboardFragment)
     }
 
+    /**
+     * A function to get the success result of the dashboard items from cloud Firestore.
+     *
+     * @param dashboardItemsList
+     */
     fun successDashboardItemsList(dashboardItemsList: ArrayList<Product>) {
+
+        // Hide the progress dialog.
         hideProgressDialog()
 
         if (dashboardItemsList.size > 0) {

@@ -16,8 +16,13 @@ import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
 import kotlinx.android.synthetic.main.activity_product_details.*
 
+/**
+ * Product Details Screen.
+ */
 class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
     private lateinit var mProductDetails: Product
+
+    // A global variable for product id.
     private var mProductId: String = ""
     private var mProductOwnerId: String = ""
 
@@ -69,6 +74,9 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to prepare the cart item to add it to the cart in cloud Firestore.
+     */
     private fun addToCart() {
         val addToCart = Cart(
             FirestoreClass().getCurrentUserID(),
@@ -85,6 +93,9 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         FirestoreClass().addCartItems(this@ProductDetailsActivity, addToCart)
     }
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_product_details_activity)
@@ -98,13 +109,25 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         toolbar_product_details_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to call the Firestore class function that will get the product details from cloud Firestore based on the product id.
+     */
     private fun getProductDetails() {
         showProgressDialog(resources.getString(R.string.please_wait))
+
+        // Call the function of FirestoreClass to get the product details.
         FirestoreClass().getProductDetails(this@ProductDetailsActivity, mProductId)
     }
 
+    /**
+     * A function to notify the success result of the product details based on the product id.
+     *
+     * @param product A model class with product details.
+     */
     fun productDetailsSuccess(product: Product) {
         mProductDetails = product
+
+        // Populate the product details in the UI.
         GlideLoader(this@ProductDetailsActivity).loadProductPicture(
             product.image,
             iv_product_detail_image
@@ -116,8 +139,10 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         tv_product_details_stock_quantity.text = product.stock_quantity
 
         if (product.stock_quantity.toInt() == 0) {
+            // Hide Progress dialog.
             hideProgressDialog()
 
+            // Hide the AddToCart button if the item is already in the cart.
             btn_add_to_cart.visibility = View.GONE
 
             tv_product_details_stock_quantity.text =
@@ -130,6 +155,7 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
                 )
             )
         } else {
+            // There is no need to check the cart list if the product owner himself is seeing the product details.
             if (FirestoreClass().getCurrentUserID() == product.user_id) {
                 hideProgressDialog()
             } else {
@@ -138,12 +164,20 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
         }
     }
 
+    /**
+     * A function to notify the success result of item exists in the cart.
+     */
     fun productExistsInCart() {
         hideProgressDialog()
+        // Hide the AddToCart button if the item is already in the cart.
         btn_add_to_cart.visibility = View.GONE
+        // Show the GoToCart button if the item is already in the cart. User can update the quantity from the cart list screen if he wants.
         btn_go_to_cart.visibility = View.VISIBLE
     }
 
+    /**
+     * A function to notify the success result of item added to the to cart.
+     */
     fun addToCartSuccess() {
         hideProgressDialog()
         Toast.makeText(
@@ -151,7 +185,10 @@ class ProductDetailsActivity : BaseActivity(), View.OnClickListener {
             resources.getString(R.string.success_message_item_added_to_cart),
             Toast.LENGTH_SHORT
         ).show()
+
+        // Hide the AddToCart button if the item is already in the cart.
         btn_add_to_cart.visibility = View.GONE
+        // Show the GoToCart button if the item is already in the cart. User can update the quantity from the cart list screen if he wants.
         btn_go_to_cart.visibility = View.VISIBLE
     }
 }

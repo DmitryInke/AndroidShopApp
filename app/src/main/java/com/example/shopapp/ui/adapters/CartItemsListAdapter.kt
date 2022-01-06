@@ -15,11 +15,20 @@ import com.example.shopapp.utils.Constants
 import com.example.shopapp.utils.GlideLoader
 import kotlinx.android.synthetic.main.item_cart_layout.view.*
 
+/**
+ * A adapter class for Cart items list.
+ */
 open class CartItemsListAdapter(
     private val context: Context,
     private var list: ArrayList<Cart>,
     private val updateCartItems: Boolean
 ) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+    /**
+     * Inflates the item views which is designed in xml layout file
+     *
+     * create a new
+     * {@link ViewHolder} and initializes some private fields to be used by RecyclerView.
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
 
         return MyViewHolder(
@@ -52,7 +61,6 @@ open class CartItemsListAdapter(
                 } else {
                     holder.itemView.ib_delete_cart_item.visibility = View.GONE
                 }
-                // END
 
                 holder.itemView.tv_cart_quantity.text =
                     context.resources.getString(R.string.lbl_out_of_stock)
@@ -146,9 +154,16 @@ open class CartItemsListAdapter(
         }
     }
 
+
+    /**
+     * Gets the number of items in the list
+     */
     override fun getItemCount(): Int {
         return list.size
     }
 
+    /**
+     * A ViewHolder describes an item view and metadata about its place within the RecyclerView.
+     */
     private class MyViewHolder(view: View) : RecyclerView.ViewHolder(view)
 }

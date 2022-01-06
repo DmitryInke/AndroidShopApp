@@ -3,6 +3,9 @@ package com.example.shopapp.models
 import android.os.Parcelable
 import kotlinx.android.parcel.Parcelize
 
+/**
+ * A data model class for Order item with required fields.
+ */
 @Parcelize
 data class Order(
     val user_id: String = "",

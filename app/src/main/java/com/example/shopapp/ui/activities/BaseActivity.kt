@@ -2,6 +2,7 @@ package com.example.shopapp.ui.activities
 
 import android.app.Dialog
 import android.os.Handler
+import android.os.Looper
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat
@@ -9,10 +10,22 @@ import com.example.shopapp.R
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.dialog_progress.*
 
+/**
+ * A base activity class is used to define the functions and members which we will use in all the activities.
+ * It inherits the AppCompatActivity class so in other activity class we will replace the AppCompatActivity with BaseActivity.
+ */
 open class BaseActivity : AppCompatActivity() {
+    // A global variable for double back press feature.
     private var doubleBackToExitPressedOnce = false
+
+    /**
+     * This is a progress dialog instance which we will initialize later on.
+     */
     private lateinit var mProgressDialog: Dialog
 
+    /**
+     * A function to show the success and error messages in snack bar component.
+     */
     fun showErrorSnackBar(message: String, errorMessage: Boolean) {
         val snackBar =
             Snackbar.make(findViewById(android.R.id.content), message, Snackbar.LENGTH_LONG)
@@ -36,6 +49,9 @@ open class BaseActivity : AppCompatActivity() {
         snackBar.show()
     }
 
+    /**
+     * This function is used to show the progress dialog with the title and message to user.
+     */
     fun showProgressDialog(text: String) {
         mProgressDialog = Dialog(this)
 
@@ -46,13 +62,20 @@ open class BaseActivity : AppCompatActivity() {
         mProgressDialog.setCancelable(false)
         mProgressDialog.setCanceledOnTouchOutside(false)
 
+        //Start the dialog and display it on screen.
         mProgressDialog.show()
     }
 
+    /**
+     * This function is used to dismiss the progress dialog if it is visible to user.
+     */
     fun hideProgressDialog() {
         mProgressDialog.dismiss()
     }
 
+    /**
+     * A function to implement the double back press feature to exit the app.
+     */
     fun doubleBackToExit() {
         if (doubleBackToExitPressedOnce) {
             super.onBackPressed()
@@ -67,7 +90,7 @@ open class BaseActivity : AppCompatActivity() {
             Toast.LENGTH_SHORT
         ).show()
 
-        @Suppress("DEPRECATION")
-        Handler().postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
+
+        Handler(Looper.getMainLooper()).postDelayed({ doubleBackToExitPressedOnce = false }, 2000)
     }
 }

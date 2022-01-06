@@ -16,8 +16,15 @@ import com.example.shopapp.ui.adapters.CartItemsListAdapter
 import com.example.shopapp.utils.Constants
 import kotlinx.android.synthetic.main.activity_cart_list.*
 
+/**
+ * Cart list activity of the application.
+ */
 class CartListActivity : BaseActivity() {
+
+    // A global variable for the product list.
     private lateinit var mProductsList: ArrayList<Product>
+
+    // A global variable for the cart list items.
     private lateinit var mCartListItems: ArrayList<Cart>
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -48,6 +55,9 @@ class CartListActivity : BaseActivity() {
         getProductList()
     }
 
+    /**
+     * A function for actionBar Setup.
+     */
     private fun setupActionBar() {
 
         setSupportActionBar(toolbar_cart_list_activity)
@@ -61,21 +71,37 @@ class CartListActivity : BaseActivity() {
         toolbar_cart_list_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to get product list to compare the current stock with the cart items.
+     */
     private fun getProductList() {
         showProgressDialog(resources.getString(R.string.please_wait))
 
         FirestoreClass().getAllProductsList(this@CartListActivity)
     }
 
+    /**
+     * A function to get the success result of product list.
+     *
+     * @param productsList
+     */
     fun successProductsListFromFireStore(productsList: ArrayList<Product>) {
         mProductsList = productsList
         getCartItemsList()
     }
 
+    /**
+     * A function to get the list of cart items in the activity.
+     */
     private fun getCartItemsList() {
         FirestoreClass().getCartList(this@CartListActivity)
     }
 
+    /**
+     * A function to notify the success result of the cart items list from cloud Firestore.
+     *
+     * @param cartList
+     */
     fun successCartItemsList(cartList: ArrayList<Cart>) {
         hideProgressDialog()
 
@@ -136,6 +162,9 @@ class CartListActivity : BaseActivity() {
         }
     }
 
+    /**
+     * A function to notify the user about the item removed from the cart list.
+     */
     fun itemRemovedSuccess() {
         hideProgressDialog()
         Toast.makeText(
@@ -146,6 +175,9 @@ class CartListActivity : BaseActivity() {
         getCartItemsList()
     }
 
+    /**
+     * A function to notify the user about the item quantity updated in the cart list.
+     */
     fun itemUpdateSuccess() {
         hideProgressDialog()
         getCartItemsList()

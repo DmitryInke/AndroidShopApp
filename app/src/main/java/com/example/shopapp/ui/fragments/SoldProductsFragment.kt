@@ -11,7 +11,9 @@ import com.example.shopapp.models.SoldProduct
 import com.example.shopapp.ui.adapters.SoldProductsListAdapter
 import kotlinx.android.synthetic.main.fragment_sold_products.*
 
-
+/**
+ * Sold Products Listing Fragment.
+ */
 class SoldProductsFragment : BaseFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -26,13 +28,19 @@ class SoldProductsFragment : BaseFragment() {
     }
 
     private fun getSoldProductsList() {
+        // Show the progress dialog.
         showProgressDialog(resources.getString(R.string.please_wait))
 
+        // Call the function of Firestore class.
         FirestoreClass().getSoldProductsList(this@SoldProductsFragment)
     }
 
+    /**
+     * A function to get the list of sold products.
+     */
     fun successSoldProductsList(soldProductsList: ArrayList<SoldProduct>) {
 
+        // Hide Progress dialog.
         hideProgressDialog()
 
         if (soldProductsList.size > 0) {

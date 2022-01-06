@@ -14,7 +14,11 @@ import com.example.shopapp.utils.GlideLoader
 import com.google.firebase.auth.FirebaseAuth
 import kotlinx.android.synthetic.main.activity_settings.*
 
+/**
+ * Setting screen of the app.
+ */
 class SettingsActivity : BaseActivity(), View.OnClickListener {
+    // A variable for user details which will be initialized later on.
     private lateinit var mUserDetails: User
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -82,17 +86,28 @@ class SettingsActivity : BaseActivity(), View.OnClickListener {
         toolbar_settings_activity.setNavigationOnClickListener { onBackPressed() }
     }
 
+    /**
+     * A function to get the user details from Firestore.
+     */
     private fun getUserDetails() {
 
+        // Show the progress dialog
         showProgressDialog(resources.getString(R.string.please_wait))
 
+        // Call the function of Firestore class to get the user details from Firestore which is already created.
         FirestoreClass().getUserDetails(this@SettingsActivity)
     }
 
+    /**
+     * A function to receive the user details and populate it in the UI.
+     */
     fun userDetailsSuccess(user: User) {
         mUserDetails = user
+
+        // Hide the progress dialog
         hideProgressDialog()
 
+        // Load the image using the Glide Loader class.
         GlideLoader(this@SettingsActivity).loadUserPicture(user.image, iv_user_photo)
 
         tv_name.text = "${user.firstName} ${user.lastName}"
